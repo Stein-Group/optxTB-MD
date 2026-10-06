@@ -1,0 +1,23 @@
+# Python / OS 
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.DS_Store
+CHANGES.md
+
+# Input data (cluster and periodic datasets, DFT references, caches) are kept locally only
+structures/
+
+# Site-specific job scripts and job logs
+*.slurm
+*.slurmout
+*.err
+
+# Run outputs
+optimization/*/hpc_runs/
+
+# Pareto analysis: notebooks and outputs stay local, only the scripts are tracked
+optimization/analyze_pareto/pareto_tests/
+
+# Large DFT wavefunction files, wherever they are linked
+*.fchk
