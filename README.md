@@ -47,7 +47,7 @@ All results were obtained with tblite 0.5.0, the current release when this work 
 
 - **Motivation.** The shortcomings of the default GFN2-xTB molecular dynamics of water and NaCl(aq), which this code corrects by reparametrization, persist with tblite 0.7.0 (see [Citation](#citation)).
 - **Code compatibility.** The command line options, gradient/virial, JSON output and restart file read by `tblite.interface.Result` are unchanged, so the workflow runs with tblite 0.7.0. Since tblite 0.6.0, the parameter files must use `cn = "dexp"` instead of `cn = "gfn"` (the old keyword is rejected). The base parameter file is selected automatically from `tblite --version` (`gfn2-xtb.toml` or `gfn2-xtb-060.toml`). The files in `parameter_files/` use `cn = "gfn"` and need the same change before they are passed to tblite >= 0.6.0.
-- **Expected calculation changes.** For clusters, tblite 0.7.0 reproduces the tblite 0.5.0 energies and forces within numerical precision. For periodic structures, tblite ≥ 0.6.0 changed the Ewald electrostatics and its contributions to forces and stress, so the PBC-optimized parameters are specific to tblite 0.5.0.
+- **Expected calculation changes.** For clusters, tblite 0.7.0 reproduces the tblite 0.5.0 energies and forces within numerical precision. For periodic structures, tblite >= 0.6.0 changed the Ewald electrostatics and its contributions to forces and stress, so the PBC-optimized parameters are specific to tblite 0.5.0.
 
 ## Data layout (`structures/`, not tracked)
 
