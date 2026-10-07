@@ -17,7 +17,8 @@ optimization/
   T_pbc/                          PBC, water and Na stages (FIM + NSGA on E, F, Xi, Reg)
   analyze_pareto/                 Pareto analysis notebooks, point export and validation scan tests
 parameter_files/          GFN2-xTB parameter files passed between stages or used in analysis
-gfn2-xtb.toml             default GFN2-xTB parameters 
+gfn2-xtb.toml             default GFN2-xTB parameters (tblite 0.5.x)
+gfn2-xtb-060.toml         default GFN2-xTB parameters (tblite >= 0.6.0, cn = "dexp")
 environment_py311.yml     conda environment of the cluster water stage
 environment_tblite_env.yml conda environment of all other stages
 structures/               input data (not tracked; layout below)
@@ -39,6 +40,14 @@ The objectives, charge scheme, dataset options, population size and number of ge
 - DFTB+ 25.1 or later, compiled with tblite 0.5.0, `dftb+` first on `PATH` in both cluster stages. 
 - Multiwfn 2026.1.12 (noGUI), set via `MULTIWFN_EXE`; its `settings.ini` must be next to the executable.
 - xtb 6.7.0, only to regenerate the Molden templates (`--prepare-templates`, `XTB_EXE`). More recent versions of tblite can generate Molden files correctly without this.
+
+### tblite version
+
+All results were obtained with tblite 0.5.0, the current release when this work started (0.6.0 and 0.7.0 followed in May and July 2026). 
+
+- **Motivation.** The shortcomings of the default GFN2-xTB molecular dynamics of water and NaCl(aq), which this code corrects by reparametrization, persist with tblite 0.7.0 (see [Citation](#citation)).
+- **Code compatibility.** The command line options, gradient/virial, JSON output and restart file read by `tblite.interface.Result` are unchanged, so the workflow runs with tblite 0.7.0. Since tblite 0.6.0, the parameter files must use `cn = "dexp"` instead of `cn = "gfn"` (the old keyword is rejected). The base parameter file is selected automatically from `tblite --version` (`gfn2-xtb.toml` or `gfn2-xtb-060.toml`). The files in `parameter_files/` use `cn = "gfn"` and need the same change before they are passed to tblite >= 0.6.0.
+- **Expected calculation changes.** For clusters, tblite 0.7.0 reproduces the tblite 0.5.0 energies and forces within numerical precision. For periodic structures, tblite ≥ 0.6.0 changed the Ewald electrostatics and its contributions to forces and stress, so the PBC-optimized parameters are specific to tblite 0.5.0.
 
 ## Data layout (`structures/`, not tracked)
 
@@ -129,4 +138,8 @@ The notebooks in `optimization/analyze_pareto/` read the fronts in `optimization
 - `$SCRATCH_ROOT/optxTB-MD/<RUN_ID>/work/`: all DFTB+, tblite and Multiwfn input and output files (parameter TOMLs, monomer runs, Molden files); can be deleted after the run.
 - `optimization/analyze_pareto/pareto_tests/<RUN_ID>/`: scan-test results.
 
-The GFN2-xTB base parameter file is selected by `tblite --version`: `gfn2-xtb.toml` for tblite 0.5.x (used here).
+The GFN2-xTB base parameter file is selected by `tblite --version`: `gfn2-xtb.toml` for tblite 0.5.x (used here), `gfn2-xtb-060.toml` for tblite >= 0.6.0 (see "tblite version").
+
+## Citation
+
+The paper describing this work is in preparation. The reference will be added here on publication.
